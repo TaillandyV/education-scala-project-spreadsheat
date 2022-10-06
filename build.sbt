@@ -9,7 +9,7 @@ lazy val root = project
       Developer(
         id    = "AdamGouja",
         name  = "Adam Gouja",
-        email = "adam.gouja@gmail.com",
+        email = "adam.gouja@edu.esiee.fr",
         url   = url("https://github.com/AdamGouja")
       ),
       Developer(
