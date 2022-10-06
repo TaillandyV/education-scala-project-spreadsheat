@@ -11,6 +11,12 @@ lazy val root = project
         name  = "Adam Gouja",
         email = "adam.gouja@gmail.com",
         url   = url("https://github.com/AdamGouja")
+      ),
+      Developer(
+        id    = "TaillandyV",
+        name  = "Valentin Taillandy",
+        email = "valentin.taillandy@edu.esiee.fr",
+        url   = url("https://github.com/TaillandyV")
       )
     ),
     scalaVersion := scala3Version,
