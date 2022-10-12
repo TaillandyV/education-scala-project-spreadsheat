@@ -22,7 +22,7 @@ lazy val root = project
         id    = "AdelKhalil",
         name  = "Adel Khalil",
         email = "adel.khalil@edu.esiee.fr",
-        url   = url("https://github.com/AdelKhalil")
+        url   = url("https://github.com/khalila95")
       ),
     ),
     scalaVersion := scala3Version,
