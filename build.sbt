@@ -17,7 +17,7 @@ lazy val root = project
         name  = "Valentin Taillandy",
         email = "valentin.taillandy@edu.esiee.fr",
         url   = url("https://github.com/TaillandyV")
-      )
+      ),
       Developer(
         id    = "AdelKhalil",
         name  = "Adel Khalil",
