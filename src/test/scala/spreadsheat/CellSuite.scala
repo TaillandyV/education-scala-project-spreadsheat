@@ -13,4 +13,14 @@ class CellSuite extends munit.FunSuite {
 
     assertEquals(Cell.Number(cell).eval, "124.0")
   }
+  test("Cell is a boolean") {
+    val cell = true
+
+    assertEquals(Cell.Booleen(cell).eval, "true")
+  }
+  test("Cell is a negative number") {
+    val cell = -124
+
+    assertEquals(Cell.Number(cell).eval, "-124.0")
+  }
 }
