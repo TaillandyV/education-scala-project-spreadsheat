@@ -2,9 +2,10 @@ package spreadsheat
 
 @main
 def main(): Unit = {
-  println("Hello world")
-  println("   1      2      3")
-  println("A       ")
-  println("B        ")
+  val spreadSheet = Spreadsheet.empty(10, 10)
+  spreadSheet.show
+  println("\n\n")
+  val updatedSpreadSheet = spreadSheet.add(1, 1, 20.0)
 
+  updatedSpreadSheet.show
 }

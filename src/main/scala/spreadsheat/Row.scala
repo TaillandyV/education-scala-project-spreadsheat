@@ -1,15 +1,14 @@
 package spreadsheat
-import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 
-class Row(size_row_init:Int) {
-  //Row var
-  var size_row: Int = size_row_init
-  var list_of_cell: ListBuffer[Cell] = ListBuffer()
-  for (i <- 0 to size_row)
-    list_of_cell.append(Cell.Text("Na"))
-
-  //Row method
-  def get_size(): Int ={
-    size_row
+case class Row(cells: List[Cell]) {
+  def show: Unit = cells.foreach {
+    cell => print(s"|${cell.show}")
   }
+
+  def add(y: Int, value: Float): Row =
+    copy(cells = cells.updated(y, Cell.Number(value)))
 }
+object Row {
+  def empty(width: Int): Row = Row((0 until width).map(_ => Cell.Empty).toList)
+}
+
