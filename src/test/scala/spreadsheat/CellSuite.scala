@@ -23,4 +23,9 @@ class CellSuite extends munit.FunSuite {
 
     assertEquals(Cell.Number(cell).show, "-124.0")
   }
+  test("cell is a number ?") {
+    val cell = "124"
+
+    Cell.stringToCell(cell) == Cell.Number(124)
+  }
 }
