@@ -8,8 +8,8 @@ case class Spreadsheet(rows: List[Row]) {
     }
   }
 
-  def add(x: Int, y: Int, value: Float): Spreadsheet =
-    copy(rows = rows.updated(x, rows(x).add(y, value)))
+  def add(rowIndex: Int, colIndex: Int, value: Float): Spreadsheet =
+    copy(rows = rows.updated(rowIndex, rows(rowIndex).add(colIndex, value)))
 }
 
 object Spreadsheet {
