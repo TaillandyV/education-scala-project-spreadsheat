@@ -11,19 +11,20 @@ def main(): Unit = {
   val spreadSheet = Spreadsheet.empty(3, 3)
   spreadSheet.show
 
+  val sumPattern = "^SUM\\((?:[A-Z]+[0-9]+[:,])+[A-Z]+[0-9]+\\)".r
 
   while(running){
     println("\n\n")
     println("Que voulez-vous faire ?")
     val input = readLine()
+
     input match {
       case "EXIT" => running = false
-      case _ => val updatedSpreadSheet = addValue(input,colTable,spreadSheet)
-        updatedSpreadSheet.show
+      case sumPattern() => println("Doing sum")
+      case _ => print("Doing")//val updatedSpreadSheet = addValue(input,colTable,spreadSheet)
+        //updatedSpreadSheet.show
     }
   }
-
-
 
 }
 
