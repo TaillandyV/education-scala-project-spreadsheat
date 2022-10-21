@@ -25,7 +25,29 @@ class CellSuite extends munit.FunSuite {
   }
   test("cell is a number ?") {
     val cell = "124"
+    println(Cell.stringToCell(cell))
+    println(Cell.Number(12))
 
-    Cell.stringToCell(cell) == Cell.Number(124)
+    assertEquals(Cell.stringToCell(cell), Cell.Number(124))
+  }
+  test("string beginning with apostrophe + number") {
+    val cell = "'124Hello"
+
+    assertEquals(Cell.stringToCell(cell), Cell.Text("124Hello"))
+  }
+  test("string beginning with number") {
+    val cell = "124hello"
+
+    assertEquals(Cell.stringToCell(cell), Cell.Error)
+  }
+  test("string beginning with letter lower case") {
+    val cell = "hello"
+
+    assertEquals(Cell.stringToCell(cell), Cell.Text("hello"))
+  }
+  test("string beginning with letter maj case") {
+    val cell = "Hello"
+
+    assertEquals(Cell.stringToCell(cell), Cell.Text("Hello"))
   }
 }

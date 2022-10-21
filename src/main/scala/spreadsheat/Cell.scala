@@ -24,22 +24,24 @@ enum Cell:
 
 //companion object
 object Cell :
-  def stringToNumber(string: String):
-  Option[Cell] = string.toFloatOption.map(float => Cell.Number(float))
+  def stringToNumber(string: String): Option[Cell] =
+    string.toFloatOption.map(float => Cell.Number(float))
 
-  def stringToBooleen(string: String):
-  Option[Cell] = string match {
-    case "true" => Some(Cell.Booleen(true))
-    case "false" => Some(Cell.Booleen(false))
-    case _ => None
-  }
+  def stringToBooleen(string: String): Option[Cell] =
+    string match {
+      case "true" => Some(Cell.Booleen(true))
+      case "false" => Some(Cell.Booleen(false))
+      case _ => None
+    }
 
-  def stringToText(string: String):
-  Option[Cell] = string match {
-    case "'_" => Some(Cell.Text(string.substring(1)))
-    case "_" => Some(Cell.Text(string))
-    case _ => None
-  }
+  def stringToText(string: String): Option[Cell] =
+    val patternBeginDigit = "^'[0-9][a-zA-Z0-9]*".r
+    val patternBeginLetter = "^[a-zA-Z]*".r
+    string match {
+      case patternBeginDigit() => Some(Cell.Text(string.substring(1)))
+      case patternBeginLetter() => Some(Cell.Text(string))
+      case _ => None
+    }
 
 
   def stringToCell(string: String): Cell = {
