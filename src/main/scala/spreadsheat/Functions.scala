@@ -2,6 +2,7 @@ package spreadsheat
 
 import spreadsheat.Cell.isCellNum
 import spreadsheat.Cell.isCellEmpty
+import spreadsheat.Cell
 
 
 def sum(listOfCell: List[Cell]): Cell =
@@ -20,6 +21,21 @@ def sum(listOfCell: List[Cell]): Cell =
       }
   }
   Cell.Number(res)
+
+def addition(cell1 : Cell, cell2:Cell) : Cell =
+  var res : Double = 0
+  if(isCellNum(cell1) && isCellNum(cell2)){
+    res = cell1.getNum.get + cell2.getNum.get
+  }
+  else if(isCellEmpty(cell1) || isCellEmpty(cell2)){
+
+  }
+  else if(!isCellNum(cell1) || !isCellNum(cell2)) {
+    println("ErrorCell")
+    Cell.ErrorCell
+  }
+  Cell.Number(res)
+
 /*
   def moins(l: List[Int]): Int = l.head + l.tail.foldLeft(0)(_ - _)
 
@@ -38,5 +54,4 @@ def sum(listOfCell: List[Cell]): Cell =
     maxi.max
 
 */
-
 
