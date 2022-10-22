@@ -18,19 +18,19 @@ enum Cell:
       case Empty => " " * 5
       case ErrorCell => "#ERROR"
 
-  def getValue : Either[String,Either[Float, Boolean]] =
-    val floatValue : Either[String,Either[Float, Boolean]] = Left(this.show)
+  def getValue : Either[String,Either[Double, Boolean]] =
+    val DoubleValue : Either[String,Either[Double, Boolean]] = Left(this.show)
     this match
-      case Number(double) => Right(Left(this.show.toFloat))
+      case Number(double) => Right(Left(this.show.toDouble))
       case Text(string) => Left(this.show)
       case Booleen(bool) => Right(Right(this.show.toBoolean))
       case Empty => Left(null)
       case ErrorCell => Left("precedent")
 
-  def getNum : Option[Float] =
-    this.show.toFloatOption
+  def getNum : Double =
+    this.show.toDouble
   /*Cell.isCellNum(this) match {
-      case true => this.show.toFloat
+      case true => this.show.toDouble
       case _ => null
     }*/
 
@@ -46,7 +46,7 @@ enum Cell:
 //companion object
 object Cell :
   def stringToNumber(string: String): Option[Cell] =
-    string.toFloatOption.map(float => Cell.Number(float))
+    string.toDoubleOption.map(Double => Cell.Number(Double))
 
   def stringToBooleen(string: String): Option[Cell] =
     string match {
