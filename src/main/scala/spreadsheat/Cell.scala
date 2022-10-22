@@ -27,11 +27,11 @@ enum Cell:
       case Empty => Left(null)
       case ErrorCell => Left("precedent")
 
-  def getNum : Double =
-    this.show.toDouble
+  def getNum : Option[Double] =
+    this.show.toDoubleOption
   /*Cell.isCellNum(this) match {
       case true => this.show.toDouble
-      case _ => null
+      case _ =>
     }*/
 
 
