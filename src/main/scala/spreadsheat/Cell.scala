@@ -1,11 +1,13 @@
 package spreadsheat
 
+
+
 enum Cell:
   case Number (double: Double)
   case Text (string : String)
   case Booleen (bool : Boolean)
   case Empty
-  case Error
+  case ErrorCell
 
   def show : String =
     this match
@@ -13,14 +15,13 @@ enum Cell:
       case Text(string) => string.toString
       case Booleen(bool) => bool.toString
       case Empty => " " * 5
-      case Error => "#ERROR"
+      case ErrorCell => "#ERROR"
 
-  def isNum : Boolean =
-    this match
-      case Number(double) => true
-      case Text(string) => false
-      case Booleen(bool) => false
-      case Error => false
+  /*def getNum : Unit =
+    if(Cell.isNum(this) == true) this.show.toFloat
+    else None
+*/
+
 
 //companion object
 object Cell :
@@ -43,7 +44,41 @@ object Cell :
       case _ => None
     }
 
-
   def stringToCell(string: String): Cell = {
-    stringToNumber(string) orElse stringToBooleen(string) orElse stringToText(string) getOrElse Cell.Error
+    stringToNumber(string) orElse stringToBooleen(string) orElse stringToText(string) getOrElse Cell.ErrorCell
+  }
+
+  def isCellNum(cell: Cell): Boolean = {
+    cell.getClass.toString match {
+      case "class spreadsheat.Cell$Number" => true
+      case _ => false
+    }
+  }
+
+  def isCellText(cell: Cell): Boolean = {
+    cell.getClass.toString match {
+      case "class spreadsheat.Cell$Text" => true
+      case _ => false
+    }
+  }
+
+  def isCellBool(cell: Cell): Boolean = {
+    cell.getClass.toString match {
+      case "class spreadsheat.Cell$Booleen" => true
+      case _ => false
+    }
+  }
+
+  def isCellEmpty(cell: Cell): Boolean = {
+    cell.getClass.toString match {
+      case "class spreadsheat.Cell$$anon$1" => true
+      case _ => false
+    }
+  }
+
+  def isCellError(cell: Cell): Boolean = {
+    cell.getClass.toString match {
+      case "class spreadsheat.Cell$$anon$1" => true
+      case _ => false
+    }
   }
