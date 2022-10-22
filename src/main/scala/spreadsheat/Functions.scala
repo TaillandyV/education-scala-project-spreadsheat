@@ -31,7 +31,7 @@ def addition(cell1 : Cell, cell2:Cell) : Cell =
 
   }
   else if(!isCellNum(cell1) || !isCellNum(cell2)) {
-    println("ErrorCell")
+    println("ErrorCell") 
     Cell.ErrorCell
   }
   Cell.Number(res)
