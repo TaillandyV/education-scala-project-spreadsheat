@@ -1,11 +1,11 @@
 package spreadsheat
 
 case class Spreadsheet(rows: List[Row]) {
-  def show: Unit = rows.foreach{
-    row => {
+  def show: Unit = rows.zipWithIndex.foreach{
+    case(row,idx) =>
+      print(idx)
       row.show
       print("\n")
-    }
   }
 
   def add(rowIndex: Int, colIndex: Int, value: Float): Spreadsheet =

@@ -1,18 +1,19 @@
 package spreadsheat
 import scala.io.StdIn.readLine
-import scala.util.Either
+import scala.concurrent.*
+
+val promise: Promise[Boolean] = Promise()
+val running : Future[Boolean] = promise.future
 
 @main
 def main(): Unit = {
 
   val colTable = (0 until 26).map(index => (index + 'A').toChar.toString -> index).toMap
 
-  var running = true
-
   val spreadSheet = Spreadsheet.empty(3, 3)
   spreadSheet.show
 
-  while(running){
+  while(!running.isCompleted){
     println("\n\n")
     println("Que voulez-vous faire ?")
     val input = readLine()
@@ -22,6 +23,8 @@ def main(): Unit = {
 }
 
 def getCommand(inputString: String):Unit={
+
+  val assignPattern = "^[A-Z]+[0-9]+=(?:[A-Z]+[0-9]+[+*-/]|-?[0-9]+[+*-/])*(?:[A-Z]+[0-9]+|-?[0-9]+)".r
 
   val sumPattern = "^[A-Z]+[0-9]+=SUM\\((?:[A-Z]+[0-9]+[:][A-Z]+[0-9]+|(?:-?[0-9]+[,]|[A-Z]+[0-9]+[,]|[A-Z]+[0-9]+[:][A-Z]+[0-9]+[,])+(?:-?[0-9]+|[A-Z]+[0-9]+|[A-Z]+[0-9]+[:][A-Z]+[0-9]+))\\)".r
 
@@ -36,7 +39,8 @@ def getCommand(inputString: String):Unit={
   val ifPattern = "^[A-Z]+[0-9]+=IF\\((?:\"[a-zA-Z0-9]*\"|-?[0-9]*|[A-Z]+[0-9]+),.+,.+\\)".r
 
   inputString match {
-    case "EXIT" => println("Exiting")
+    case "EXIT" => promise.success(true)
+    case assignPattern() => println("Doing assign")
     case sumPattern() => println("Doing sum")
     case concatPattern() => println("Doing concat")
     case minPattern() => println("Doing min")
@@ -46,7 +50,6 @@ def getCommand(inputString: String):Unit={
     //updatedSpreadSheet.show
   }
 }
-
 
 def addValue(input:String,colTable:Map[String,Int],spreadSheet: Spreadsheet): Spreadsheet = {
   val command = input.split("=")
