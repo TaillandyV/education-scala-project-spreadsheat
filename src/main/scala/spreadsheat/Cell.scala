@@ -1,5 +1,6 @@
 package spreadsheat
 
+import spreadsheat.Cell.stringToBooleen
 
 
 enum Cell:
@@ -17,10 +18,29 @@ enum Cell:
       case Empty => " " * 5
       case ErrorCell => "#ERROR"
 
-  /*def getNum : Unit =
-    if(Cell.isNum(this) == true) this.show.toFloat
-    else None
-*/
+  def getValue : Either[String,Either[Float, Boolean]] =
+    val floatValue : Either[String,Either[Float, Boolean]] = Left(this.show)
+    this match
+      case Number(double) => Right(Left(this.show.toFloat))
+      case Text(string) => Left(this.show)
+      case Booleen(bool) => Right(Right(this.show.toBoolean))
+      case Empty => Left(null)
+      case ErrorCell => Left("precedent")
+
+  def getNum : Option[Float] =
+    this.show.toFloatOption
+  /*Cell.isCellNum(this) match {
+      case true => this.show.toFloat
+      case _ => null
+    }*/
+
+
+  def getText : String =
+    Cell.isCellText(this) match {
+      case true => this.show
+      case _ => null
+    }
+
 
 
 //companion object
