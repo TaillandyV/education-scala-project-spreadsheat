@@ -64,7 +64,7 @@ def getCommand(inputString: String,spreadSheet: Spreadsheet): Spreadsheet={
       println("Doing if")
       spreadSheet
     case _ =>
-      print("Not a command")
+      println("Not a command")
       spreadSheet
   }
 }
