@@ -78,9 +78,15 @@ def extractCommand(input:String)={
 }
 
 def extractCoordinate(input:String)={
-  val col = colTable.getOrElse("[0-9]+".r.split(input)(0), 0)
-  val row = "[A-Z]+".r.split(input)(1).toInt
-  (row,col)
+  input match{
+    case cellCoordinate() =>
+      val col = colTable.getOrElse("[0-9]+".r.split(input)(0), 0)
+      val row = "[A-Z]+".r.split(input)(1).toInt
+      (row,col)
+    case _ => (0,0)
+
+  }
+
 }
 
 def addValue(input:String,spreadSheet: Spreadsheet): Spreadsheet = {
