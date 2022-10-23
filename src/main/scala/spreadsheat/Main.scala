@@ -4,11 +4,10 @@ import scala.concurrent.*
 
 val promise: Promise[Boolean] = Promise()
 val running : Future[Boolean] = promise.future
+val colTable = (0 until 26).map(index => (index + 'A').toChar.toString -> index).toMap
 
 @main
 def main(): Unit = {
-
-  val colTable = (0 until 26).map(index => (index + 'A').toChar.toString -> index).toMap
 
   val spreadSheet = Spreadsheet.empty(3, 3)
   spreadSheet.show
@@ -17,12 +16,12 @@ def main(): Unit = {
     println("\n\n")
     println("Que voulez-vous faire ?")
     val input = readLine()
-    getCommand(input)
+    getCommand(input,spreadSheet)
   }
 
 }
 
-def getCommand(inputString: String):Unit={
+def getCommand(inputString: String,spreadSheet: Spreadsheet):Unit={
 
   val assignPattern = "^[A-Z]+[0-9]+=(?:[A-Z]+[0-9]+[+*-/]|-?[0-9]+[+*-/])*(?:[A-Z]+[0-9]+|-?[0-9]+)".r
 
@@ -40,7 +39,7 @@ def getCommand(inputString: String):Unit={
 
   inputString match {
     case "EXIT" => promise.success(true)
-    case assignPattern() => println("Doing assign")
+    case assignPattern() => addValue(inputString,colTable,spreadSheet).show
     case sumPattern() => println("Doing sum")
     case concatPattern() => println("Doing concat")
     case minPattern() => println("Doing min")
@@ -59,6 +58,13 @@ def addValue(input:String,colTable:Map[String,Int],spreadSheet: Spreadsheet): Sp
   val col = colTable.getOrElse("[0-9]+".r.split(location)(0), 0)
   val row = "[A-Z]+".r.split(location)(1).toInt
 
+  val additionList = value.split("[+-]")
 
-  spreadSheet.add(row, col, value.toFloat)
+  if (additionList.size >=2){
+    additionList.foreach{ x=>
+      println(x)
+    }
+    spreadSheet
+  }
+  else  spreadSheet.add(row, col, Cell.stringToCell(additionList(0)))
 }
