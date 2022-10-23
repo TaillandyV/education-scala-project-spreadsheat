@@ -6,22 +6,26 @@ val promise: Promise[Boolean] = Promise()
 val running : Future[Boolean] = promise.future
 val colTable = (0 until 26).map(index => (index + 'A').toChar.toString -> index).toMap
 
+val cellCoordinate = "^[A-Z]+[0-9]+".r
+
 @main
 def main(): Unit = {
 
-  val spreadSheet = Spreadsheet.empty(3, 3)
+  var spreadSheet = Spreadsheet.empty(3, 3)
   spreadSheet.show
 
   while(!running.isCompleted){
     println("\n\n")
     println("Que voulez-vous faire ?")
     val input = readLine()
-    getCommand(input,spreadSheet)
+    val updatedSpreadsheet : Spreadsheet = getCommand(input,spreadSheet)
+    updatedSpreadsheet.show
+    spreadSheet = updatedSpreadsheet
   }
 
 }
 
-def getCommand(inputString: String,spreadSheet: Spreadsheet):Unit={
+def getCommand(inputString: String,spreadSheet: Spreadsheet): Spreadsheet={
 
   val assignPattern = "^[A-Z]+[0-9]+=(?:[A-Z]+[0-9]+[+*-/]|-?[0-9]+[+*-/])*(?:[A-Z]+[0-9]+|-?[0-9]+)".r
 
@@ -38,33 +42,71 @@ def getCommand(inputString: String,spreadSheet: Spreadsheet):Unit={
   val ifPattern = "^[A-Z]+[0-9]+=IF\\((?:\"[a-zA-Z0-9]*\"|-?[0-9]*|[A-Z]+[0-9]+),.+,.+\\)".r
 
   inputString match {
-    case "EXIT" => promise.success(true)
-    case assignPattern() => addValue(inputString,colTable,spreadSheet).show
-    case sumPattern() => println("Doing sum")
-    case concatPattern() => println("Doing concat")
-    case minPattern() => println("Doing min")
-    case maxPattern() => println("Doing max")
-    case ifPattern() => println("Doing if")
-    case _ => print("Not a command")//val updatedSpreadSheet = addValue(input,colTable,spreadSheet)
-    //updatedSpreadSheet.show
+    case "EXIT" =>
+      promise.success(true)
+      spreadSheet
+    case assignPattern() =>
+      println("Doing assign")
+      addValue(inputString,spreadSheet)
+    case sumPattern() =>
+      println("Doing sum")
+      spreadSheet
+    case concatPattern() =>
+      println("Doing concat")
+      spreadSheet
+    case minPattern() =>
+      println("Doing min")
+      spreadSheet
+    case maxPattern() =>
+      println("Doing max")
+      spreadSheet
+    case ifPattern() =>
+      println("Doing if")
+      spreadSheet
+    case _ =>
+      print("Not a command")
+      spreadSheet
   }
 }
 
-def addValue(input:String,colTable:Map[String,Int],spreadSheet: Spreadsheet): Spreadsheet = {
+def extractCommand(input:String)={
   val command = input.split("=")
   val location = command(0)
   val value = command(1)
+  val (row,col) = extractCoordinate(location)
+  (row,col,value)
+}
 
-  val col = colTable.getOrElse("[0-9]+".r.split(location)(0), 0)
-  val row = "[A-Z]+".r.split(location)(1).toInt
+def extractCoordinate(input:String)={
+  val col = colTable.getOrElse("[0-9]+".r.split(input)(0), 0)
+  val row = "[A-Z]+".r.split(input)(1).toInt
+  (row,col)
+}
 
-  val additionList = value.split("[+-]")
+def addValue(input:String,spreadSheet: Spreadsheet): Spreadsheet = {
 
-  if (additionList.size >=2){
-    additionList.foreach{ x=>
-      println(x)
+  val (row,col,value) = extractCommand(input)
+  val addList = value.split("[+]")
+
+  if (addList.size >= 2){
+    addList.foreach{ operation=>
+      println(operation)
     }
     spreadSheet
   }
-  else  spreadSheet.add(row, col, Cell.stringToCell(additionList(0)))
+  else {
+    addList(0) match{
+      case cellCoordinate() =>
+        val (corRow, corCol) = extractCoordinate(addList(0))
+        spreadSheet.add(row, col, spreadSheet.getCell(corRow,corCol))
+      case _ => spreadSheet.add(row, col, Cell.stringToCell(addList(0)))
+    }
+  }
 }
+/*
+def sumFunction(input:String,colTable:Map[String,Int],spreadSheet: Spreadsheet): Spreadsheet = {
+  val (row,col,value) = extractCommand(input)
+  val sumList = value.split("[,]")
+
+}
+*/

@@ -10,6 +10,9 @@ case class Spreadsheet(rows: List[Row]) {
 
   def add(rowIndex: Int, colIndex: Int, newCell: Cell): Spreadsheet =
     copy(rows = rows.updated(rowIndex, rows(rowIndex).add(colIndex, newCell)))
+
+  def getCell(rowIndex: Int, colIndex: Int): Cell =
+    rows(rowIndex).getCell(colIndex)
 }
 
 object Spreadsheet {
