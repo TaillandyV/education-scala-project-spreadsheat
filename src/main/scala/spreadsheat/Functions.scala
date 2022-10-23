@@ -23,18 +23,16 @@ def sum(listOfCell: List[Cell]): Cell =
   Cell.Number(res)
 
 def addition(cell1 : Cell, cell2:Cell) : Cell =
-  var res : Double = 0
   if(isCellNum(cell1) && isCellNum(cell2)){
-    res = cell1.getNum.get + cell2.getNum.get
+    Cell.Number(cell1.getNum.get + cell2.getNum.get)
   }
-  else if(isCellEmpty(cell1) || isCellEmpty(cell2)){
-
+  else if (isCellEmpty(cell1)){
+    Cell.Number(cell2.getNum.get)
   }
-  else if(!isCellNum(cell1) || !isCellNum(cell2)) {
-    println("ErrorCell") 
-    Cell.ErrorCell
+  else if (isCellEmpty(cell2)){
+    Cell.Number(cell1.getNum.get)
   }
-  Cell.Number(res)
+  else Cell.ErrorCell
 
 /*
   def moins(l: List[Int]): Int = l.head + l.tail.foldLeft(0)(_ - _)
