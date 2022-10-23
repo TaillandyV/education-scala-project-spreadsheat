@@ -7,22 +7,22 @@ import spreadsheat.Cell.isCellEmpty
 
 
 class FunctionsSuite extends munit.FunSuite {
-  test("sum") {
+  test("sum that works") {
     //sum
-    var l = List(Cell.Number(1), Cell.Empty, Cell.Text("3"), Cell.Number(4))
-    var res = sum(l)
-    println(res)
-    //assertEquals(res, 10)
+    assertEquals(sum(List(Cell.Number(1), Cell.Empty, Cell.Number(3), Cell.Number(4))), Cell.Number(8))
+  }
+  test("sum with text") {
+    //sum
+    assertEquals(sum(List(Cell.Number(1), Cell.Empty, Cell.Text("3"), Cell.Number(4))), Cell.ErrorCell)
   }
 
-
-  test("addition") {
+  test("addition number + text") {
     //addition
-    var l = Cell.Number(2)
-    var l2 = Cell.Text("ed")
-    var res = addition(l, l2)
-    println(res)
-    //assertEquals(res, 10)
+    assertEquals(addition(Cell.Number(2), Cell.Text("ed")), Cell.ErrorCell)
+  }
+  test("addition that works") {
+    //addition
+    assertEquals(addition(Cell.Number(2), Cell.Number(5)), Cell.Number(7))
   }
   /*
     test("soustraction") {

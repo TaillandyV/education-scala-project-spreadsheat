@@ -4,7 +4,6 @@ import spreadsheat.Cell.isCellNum
 import spreadsheat.Cell.isCellEmpty
 import spreadsheat.Cell
 
-
 def sum(listOfCell: List[Cell]): Cell =
   var res : Double = 0
   listOfCell.zipWithIndex.foreach{
@@ -13,11 +12,9 @@ def sum(listOfCell: List[Cell]): Cell =
         res = res + value.getNum.get
       }
       else if(isCellEmpty(value)){
-
       }
       else if(!isCellNum(value)) {
-        //println("ErrorCell")
-        Cell.ErrorCell
+        return Cell.ErrorCell
       }
   }
   Cell.Number(res)
