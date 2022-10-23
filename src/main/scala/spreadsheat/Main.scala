@@ -50,7 +50,7 @@ def getCommand(inputString: String,spreadSheet: Spreadsheet): Spreadsheet={
       addValue(inputString,spreadSheet)
     case sumPattern() =>
       println("Doing sum")
-      spreadSheet
+      sumFunction(inputString,spreadSheet)
     case concatPattern() =>
       println("Doing concat")
       spreadSheet
@@ -103,10 +103,12 @@ def addValue(input:String,spreadSheet: Spreadsheet): Spreadsheet = {
     }
   }
 }
-/*
-def sumFunction(input:String,colTable:Map[String,Int],spreadSheet: Spreadsheet): Spreadsheet = {
-  val (row,col,value) = extractCommand(input)
-  val sumList = value.split("[,]")
 
+def sumFunction(input:String, spreadSheet: Spreadsheet): Spreadsheet = {
+  val (row,col,value) = extractCommand(input)
+  val valueCleared = value.substring(4, value.length - 1)
+  val sumList = valueCleared.split(",")
+  val corList = sumList.map(extractCoordinate)
+  val cellList = corList.map(spreadSheet.getCell).toList
+  spreadSheet.add(row,col,sum(cellList))
 }
-*/
