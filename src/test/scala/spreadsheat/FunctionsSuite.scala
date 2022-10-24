@@ -7,9 +7,79 @@ import spreadsheat.Cell.isCellEmpty
 
 
 class FunctionsSuite extends munit.FunSuite {
+
+  test("inf that works"){
+    val cell1 = Cell.Number(1)
+    val cell2 = Cell.Number(2)
+    assertEquals(compareOperator(cell1,"<", cell2), Cell.Booleen(true))
+    assertEquals(compareOperator(cell2,"<", cell1), Cell.Booleen(false))
+    assertEquals(compareOperator(cell1,"<", cell1), Cell.Booleen(false))
+  }
+
+  test("inf number + text") {
+    val cell1 = Cell.Number(1)
+    val cell2 = Cell.Text("oui")
+    assertEquals(compareOperator(cell1,"<", cell2), Cell.ErrorCell)
+    assertEquals(compareOperator(cell2,"<", cell1), Cell.ErrorCell)
+    assertEquals(compareOperator(cell2,"<", cell2), Cell.ErrorCell)
+  }
+
+  test("supp that works") {
+    val cell1 = Cell.Number(3)
+    val cell2 = Cell.Number(2)
+
+    assertEquals(compareOperator(cell1, ">", cell2), Cell.Booleen(true))
+    assertEquals(compareOperator(cell2, ">", cell1), Cell.Booleen(false))
+    assertEquals(compareOperator(cell1, ">", cell1), Cell.Booleen(false))
+  }
+
+  test("supp number + text") {
+    val cell1 = Cell.Number(1)
+    val cell2 = Cell.Text("oui")
+    assertEquals(compareOperator(cell1, ">",cell2), Cell.ErrorCell)
+    assertEquals(compareOperator(cell2, ">",cell1), Cell.ErrorCell)
+    assertEquals(compareOperator(cell2,"<", cell2), Cell.ErrorCell)
+  }
+
+  test("infOrEqual that works") {
+    val cell1 = Cell.Number(1)
+    val cell2 = Cell.Number(2)
+
+    assertEquals(compareOperator(cell2, "<=",cell2), Cell.Booleen(true))
+    assertEquals(compareOperator(cell1, "<=",cell2), Cell.Booleen(true))
+    assertEquals(compareOperator(cell2, "<=",cell1), Cell.Booleen(false))
+  }
+
+  test("infOrEqual number + text") {
+    val cell1 = Cell.Number(1)
+    val cell2 = Cell.Text("oui")
+
+    assertEquals(compareOperator(cell1, "<=",cell2), Cell.ErrorCell)
+    assertEquals(compareOperator(cell2, "<=",cell1), Cell.ErrorCell)
+    assertEquals(compareOperator(cell2,"<", cell2), Cell.ErrorCell)
+  }
+
+  test("supOrEqual that works") {
+    val cell1 = Cell.Number(1)
+    val cell2 = Cell.Number(2)
+
+    assertEquals(compareOperator(cell1, ">=",cell2), Cell.Booleen(false))
+    assertEquals(compareOperator(cell2, ">=",cell1), Cell.Booleen(true))
+    assertEquals(compareOperator(cell2, ">=",cell2), Cell.Booleen(true))
+  }
+
+  test("supOrEqual number + text") {
+    val cell1 = Cell.Number(1)
+    val cell2 = Cell.Text("oui")
+
+    assertEquals(compareOperator(cell1, ">=",cell2), Cell.ErrorCell)
+    assertEquals(compareOperator(cell2, ">=",cell1), Cell.ErrorCell)
+    assertEquals(compareOperator(cell2,"<", cell2), Cell.ErrorCell)
+  }
+
   test("sum that works") {
-    //sum
-    assertEquals(sum(List(Cell.Number(1), Cell.Empty, Cell.Number(3), Cell.Number(4))), Cell.Number(8))
+    val liste = List(Cell.Number(1), Cell.Empty, Cell.Number(3), Cell.Number(4))
+    assertEquals(sum(liste), Cell.Number(8))
   }
   test("sum with text") {
     //sum

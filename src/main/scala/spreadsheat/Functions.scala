@@ -5,8 +5,6 @@ import spreadsheat.Cell.isCellEmpty
 import spreadsheat.Cell.isCellText
 import spreadsheat.Cell
 
-def equals(cell1 : Cell, cell2: Cell): Boolean = cell1.equals(cell2)
-
 def compareCompute(value1: Double, operator: String, value2: Double): Boolean =
   operator match {
     case "<" => value1 < value2
