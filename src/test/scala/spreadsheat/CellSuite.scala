@@ -95,12 +95,8 @@ class CellSuite extends munit.FunSuite {
     val cell4 = Cell.Empty
     val cell5 = Cell.ErrorCell
 
-    val res = cell.getNum
-
-    println(res)
-
-    /*assertEquals(cell.getNum, 124)
+    assertEquals(cell.getNum.get, 124)
     assertEquals(cell2.getText, "hello")
-    assertEquals(cell2.getValue, "hello")*/
+    assertEquals(cell3.getBool, true)
   }
 }

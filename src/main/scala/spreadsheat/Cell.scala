@@ -29,17 +29,12 @@ enum Cell:
 
   def getNum : Option[Double] =
     this.show.toDoubleOption
-  /*Cell.isCellNum(this) match {
-      case true => this.show.toDouble
-      case _ =>
-    }*/
-
 
   def getText : String =
-    Cell.isCellText(this) match {
-      case true => this.show
-      case _ => null
-    }
+    this.show
+
+  def getBool : Boolean =
+    this.show.toBoolean
 
 
 
@@ -90,15 +85,19 @@ object Cell :
   }
 
   def isCellEmpty(cell: Cell): Boolean = {
-    cell.getClass.toString match {
+    if(cell.show == "     ") true
+    else false
+    /*cell.getClass.toString match {
       case "class spreadsheat.Cell$$anon$1" => true
       case _ => false
-    }
+    }*/
   }
 
   def isCellError(cell: Cell): Boolean = {
-    cell.getClass.toString match {
+    if(cell.show == "#ERROR") true
+    else false
+    /*cell.getClass.toString match {
       case "class spreadsheat.Cell$$anon$1" => true
       case _ => false
-    }
+    }*/
   }
