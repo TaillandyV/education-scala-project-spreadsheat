@@ -5,63 +5,28 @@ import spreadsheat.Cell.isCellEmpty
 import spreadsheat.Cell.isCellText
 import spreadsheat.Cell
 
-def equals(l1 : Cell, l2: Cell): Boolean = l1.equals(l2)
+def equals(cell1 : Cell, cell2: Cell): Boolean = cell1.equals(cell2)
 
-def inf(cell1: Cell, cell2: Cell): Cell =
+def compareOperator(cell1: Cell, operator:String, cell2: Cell):Cell =
   if (isCellNum(cell1) && isCellNum(cell2)) {
-    val a1 = cell1.getNum.get
-    val a2 = cell2.getNum.get
-    Cell.Booleen(a1 < a2)
+    Cell.Booleen(compareCalculate(cell1.getNum.get,operator,cell2.getNum.get))
   }
-  else if (isCellEmpty(cell1)) {
-    Cell.Number(cell2.getNum.get)
+  else if (isCellEmpty(cell1) && isCellNum(cell2)) {
+    Cell.Booleen(compareCalculate(0.0,operator,cell2.getNum.get))
   }
-  else if (isCellEmpty(cell2)) {
-    Cell.Number(cell1.getNum.get)
+  else if (isCellNum(cell1) && isCellEmpty(cell2)) {
+    Cell.Booleen(compareCalculate(cell1.getNum.get,operator,0.0))
   }
   else Cell.ErrorCell
 
-def supp(cell1: Cell, cell2: Cell): Cell =
-  if (isCellNum(cell1) && isCellNum(cell2)) {
-    val a1 = cell1.getNum.get
-    val a2 = cell2.getNum.get
-    Cell.Booleen(a1 > a2)
+def compareCalculate(value1: Double, operator: String, value2: Double): Boolean =
+  operator match {
+    case "<" => value1 < value2
+    case ">" => value1 > value2
+    case "=" => value1 == value2
+    case ">=" => value1 >= value2
+    case "<=" => value1 <= value2
   }
-  else if (isCellEmpty(cell1)) {
-    Cell.Number(cell2.getNum.get)
-  }
-  else if (isCellEmpty(cell2)) {
-    Cell.Number(cell1.getNum.get)
-  }
-  else Cell.ErrorCell
-
-def infOrEqual(cell1: Cell, cell2: Cell): Cell =
-  if (isCellNum(cell1) && isCellNum(cell2)) {
-    val a1 = cell1.getNum.get
-    val a2 = cell2.getNum.get
-    Cell.Booleen(a1 <= a2)
-  }
-  else if (isCellEmpty(cell1)) {
-    Cell.Number(cell2.getNum.get)
-  }
-  else if (isCellEmpty(cell2)) {
-    Cell.Number(cell1.getNum.get)
-  }
-  else Cell.ErrorCell
-
-def supOrEqual(cell1: Cell, cell2: Cell): Cell =
-  if (isCellNum(cell1) && isCellNum(cell2)) {
-    val a1 = cell1.getNum.get
-    val a2 = cell2.getNum.get
-    Cell.Booleen(a1 >= a2)
-  }
-  else if (isCellEmpty(cell1)) {
-    Cell.Number(cell2.getNum.get)
-  }
-  else if (isCellEmpty(cell2)) {
-    Cell.Number(cell1.getNum.get)
-  }
-  else Cell.ErrorCell
 
 def sum(listOfCell: List[Cell]): Cell =
   var res : Double = 0
