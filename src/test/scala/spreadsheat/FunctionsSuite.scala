@@ -19,45 +19,107 @@ class FunctionsSuite extends munit.FunSuite {
   test("addition number + text") {
     //addition
     assertEquals(addition(Cell.Number(2), Cell.Text("ed")), Cell.ErrorCell)
+    println(addition(Cell.Number(2), Cell.Text("ed")))
+  }
+  test("addition cell empty + text") {
+    //addition
+    assertEquals(addition(Cell.Number(2), Cell.Text("ed")), Cell.ErrorCell)
+    println(addition(Cell.Empty, Cell.Text("ed")))
   }
   test("addition that works") {
     //addition
     assertEquals(addition(Cell.Number(2), Cell.Number(5)), Cell.Number(7))
+    println(addition(Cell.Number(2), Cell.Number(5)))
   }
-  /*
-    test("soustraction") {
-      //soustraction
-      var l = List(1, 2, 3, 4)
-      var res = moins(l)
-      assertEquals(res, -8)
-    }
+  test("soustraction number + text") {
+    //soustraction
+    assertEquals(minus(Cell.Number(2), Cell.Text("ed")), Cell.ErrorCell)
+    println(minus(Cell.Number(2), Cell.Text("ed")))
+  }
+  test("soustraction cell empty + text") {
+    //soustraction
+    assertEquals(minus(Cell.Number(2), Cell.Text("ed")), Cell.ErrorCell)
+    println(minus(Cell.Empty, Cell.Text("ed")))
+  }
+  test("soustraction that works") {
+    //soustraction
+    assertEquals(minus(Cell.Number(-2), Cell.Number(-5)), Cell.Number(3))
+    println(minus(Cell.Number(-2), Cell.Number(-5)))
+  }
 
+  test("multiplication number + text") {
+    //multiplication
+    assertEquals(multiplication(Cell.Number(2), Cell.Text("ed")), Cell.ErrorCell)
+    println(multiplication(Cell.Number(2), Cell.Text("ed")))
+  }
+  test("multiplication cell empty + text") {
+    //multiplication
+    assertEquals(multiplication(Cell.Number(2), Cell.Text("ed")), Cell.ErrorCell)
+    println(multiplication(Cell.Empty, Cell.Text("ed")))
+  }
+  test("multiplication that works") {
+    //multiplication
+    assertEquals(multiplication(Cell.Number(-2), Cell.Number(1)), Cell.Number(-2))
+    println(multiplication(Cell.Number(-2), Cell.Number(1)))
+  }
 
-    test("multiplication") {
-      //multiplication
-      var l = List(2, 4)
-      var res = multiplier(l)
-      assertEquals(res, 8)
-    }
+  test("division number + text") {
+    //division
+    assertEquals(division(Cell.Number(2), Cell.Text("ed")), Cell.ErrorCell)
+    println(division(Cell.Number(2), Cell.Text("ed")))
+  }
+  test("division cell empty + text") {
+    //division
+    assertEquals(division(Cell.Number(2), Cell.Text("ed")), Cell.ErrorCell)
+    println(division(Cell.Empty, Cell.Text("ed")))
+  }
+  test("division number/0") {
+    //division
+    assertEquals(division(Cell.Number(0), Cell.Number(0)), Cell.ErrorCell)
+    println(division(Cell.Number(0), Cell.Number(0)))
+  }
+  test("division that works") {
+    //division
+    assertEquals(division(Cell.Number(-0), Cell.Number(0)), Cell.Number(0))
+    println(division(Cell.Number(-0), Cell.Number(0)))
+  }
 
-    test("division") {
-      //division
-      var l = List(16.0, 4.0)
-      var res = diviser(l)
-      assertEquals(res, 4.0)
-    }
+  test("concat text + number") {
+    //concat
+    assertEquals(concat(Cell.Number(2), Cell.Text("ed")), Cell.ErrorCell)
+    println(concat(Cell.Number(2), Cell.Empty))
+  }
+  test("concat cell empty + number") {
+    //division
+    assertEquals(concat(Cell.Number(2), Cell.Text("ed")), Cell.ErrorCell)
+    println(concat(Cell.Empty, Cell.Number(2)))
+  }
+  test("concat that works") {
+    //concat
+    assertEquals(concat(Cell.Text("hello"), Cell.Text("world")), Cell.Text("hello world"))
+    println(concat(Cell.Empty, Cell.Text("world")))
+  }
 
-    test("minimum") {
-      // Minimum
-      var mini = List(1, 2, 3, 4)
-      var resmin = minimum(mini)
-      assertEquals(resmin, 1)
-    }
+  test("minimum with text") {
+    //minimum
+    assertEquals(minimum(List(Cell.Number(1), Cell.Empty, Cell.Text("3"), Cell.Number(4))), Cell.ErrorCell)
+    println(minimum(List(Cell.Number(1), Cell.Number(2), Cell.Text("3"), Cell.Number(4))))
+  }
+  test("minimum that works") {
+    //minimum
+    assertEquals(minimum(List(Cell.Number(1), Cell.Number(2), Cell.Number(3), Cell.Number(4))), Cell.Number(1))
+    println(minimum(List(Cell.Number(1), Cell.Number(2), Cell.Number(3), Cell.Number(4))))
+  }
 
-    test("Maximum") {
-      // Maximum
-      var maxi = List(1, 2, 3, 4)
-      var resmax = maximum(maxi)
-      assertEquals(resmax, 4)
-    }*/
+  test("maximum with text") {
+    //maximum
+    assertEquals(maximum(List(Cell.Number(1), Cell.Empty, Cell.Text("3"), Cell.Number(4))), Cell.ErrorCell)
+    println(maximum(List(Cell.Number(1), Cell.Number(2), Cell.Text("3"), Cell.Number(4))))
+  }
+  test("maximum that works") {
+    //maximum
+    assertEquals(maximum(List(Cell.Number(1), Cell.Number(2), Cell.Number(3), Cell.Number(4))), Cell.Number(4))
+    println(maximum(List(Cell.Number(1), Cell.Number(2), Cell.Number(3), Cell.Number(4))))
+  }
+ 
 }

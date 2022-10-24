@@ -2,6 +2,7 @@ package spreadsheat
 
 import spreadsheat.Cell.isCellNum
 import spreadsheat.Cell.isCellEmpty
+import spreadsheat.Cell.isCellText
 import spreadsheat.Cell
 
 def equals(l1 : Cell, l2: Cell): Boolean = l1.equals(l2)
@@ -81,30 +82,105 @@ def addition(cell1 : Cell, cell2:Cell) : Cell =
   if(isCellNum(cell1) && isCellNum(cell2)){
     Cell.Number(cell1.getNum.get + cell2.getNum.get)
   }
-  else if (isCellEmpty(cell1)){
+  else if (isCellEmpty(cell1) && isCellNum(cell2)){
     Cell.Number(cell2.getNum.get)
   }
-  else if (isCellEmpty(cell2)){
+  else if (isCellEmpty(cell2) && isCellNum(cell1)){
     Cell.Number(cell1.getNum.get)
   }
   else Cell.ErrorCell
 
-/*
-  def moins(l: List[Int]): Int = l.head + l.tail.foldLeft(0)(_ - _)
 
-  def multiplier(l: List[Int]): Int = l.head * l.tail.foldLeft(1)(_ * _)
-
-  def diviser(l: List[Double]): Double = l.head * l.tail.foldLeft(1.0)((acc, curr) => acc / curr)
-
-  def concat(v1: String, v2: String): String = v1 + v2
-
-  def minimum(mini: List[Int]): Int =
-  {
-    mini.min
+def minus(cell1 : Cell, cell2:Cell) : Cell =
+  if(isCellNum(cell1) && isCellNum(cell2)){
+    Cell.Number(cell1.getNum.get - cell2.getNum.get)
   }
+  else if (isCellEmpty(cell1) && isCellNum(cell2)){
+    Cell.Number(cell2.getNum.get)
+  }
+  else if (isCellEmpty(cell2) && isCellNum(cell1)){
+    Cell.Number(cell1.getNum.get)
+  }
+  else Cell.ErrorCell
 
-  def maximum(maxi: List[Int]): Int =
-    maxi.max
 
-*/
+def multiplication(cell1 : Cell, cell2:Cell) : Cell =
+  if(isCellNum(cell1) && isCellNum(cell2)){
+    // Je fais ça pour ne pas qu'on se retrouve avec des résultats du type -0
+    if((cell1.getNum.get == 0) || (cell2.getNum.get == 0)){
+      Cell.Number(0)
+    }
+    else Cell.Number(cell1.getNum.get * cell2.getNum.get)
+  }
+  else if (isCellEmpty(cell1) && isCellNum(cell2)){
+    Cell.Number(cell2.getNum.get)
+  }
+  else if (isCellEmpty(cell2) && isCellNum(cell1)){
+    Cell.Number(cell1.getNum.get)
+  }
+  else Cell.ErrorCell
+
+def division(cell1 : Cell, cell2:Cell) : Cell =
+  if(isCellNum(cell1) && isCellNum(cell2)){
+    if((cell1.getNum.get == 0) && (cell2.getNum.get != 0)){
+      Cell.Number(0)
+    }
+    else if(cell2.getNum.get == 0){
+      Cell.ErrorCell
+    }
+    else Cell.Number(cell1.getNum.get / cell2.getNum.get)
+  }
+  else if (isCellEmpty(cell1) && isCellNum(cell2)){
+    Cell.Number(cell2.getNum.get)
+  }
+  else if (isCellEmpty(cell2) && isCellNum(cell1)){
+    Cell.Number(cell1.getNum.get)
+  }
+  else Cell.ErrorCell
+
+def concat(cell1 : Cell, cell2:Cell) : Cell =
+  if(isCellText(cell1) && isCellText(cell2)){
+    Cell.Text(cell1.getText + " " + cell2.getText)
+  }
+  else if (isCellEmpty(cell1) && isCellText(cell2)){
+    Cell.Text(cell2.getText)
+  }
+  else if (isCellEmpty(cell2) && isCellText(cell1)){
+    Cell.Text(cell1.getText)
+  }
+  else Cell.ErrorCell
+
+def minimum(listOfCell: List[Cell]): Cell =
+  var mini: Double = Double.MaxValue
+  listOfCell.zipWithIndex.foreach{
+    case(value, idx)=>
+      if(isCellNum(value)){
+        if(value.getNum.get < mini){
+          mini = value.getNum.get
+        }
+      }
+      else if(isCellEmpty(value)){
+      }
+      else if(!isCellNum(value)) {
+        return Cell.ErrorCell
+      }
+  }
+  Cell.Number(mini)
+
+def maximum(listOfCell: List[Cell]): Cell =
+  var maxi: Double = Double.MinValue
+  listOfCell.zipWithIndex.foreach{
+    case(value, idx)=>
+      if(isCellNum(value)){
+        if(value.getNum.get > maxi){
+          maxi = value.getNum.get
+        }
+      }
+      else if(isCellEmpty(value)){
+      }
+      else if(!isCellNum(value)) {
+        return Cell.ErrorCell
+      }
+  }
+  Cell.Number(maxi)
 
