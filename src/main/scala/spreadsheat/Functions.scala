@@ -7,19 +7,7 @@ import spreadsheat.Cell
 
 def equals(cell1 : Cell, cell2: Cell): Boolean = cell1.equals(cell2)
 
-def compareOperator(cell1: Cell, operator:String, cell2: Cell):Cell =
-  if (isCellNum(cell1) && isCellNum(cell2)) {
-    Cell.Booleen(compareCalculate(cell1.getNum.get,operator,cell2.getNum.get))
-  }
-  else if (isCellEmpty(cell1) && isCellNum(cell2)) {
-    Cell.Booleen(compareCalculate(0.0,operator,cell2.getNum.get))
-  }
-  else if (isCellNum(cell1) && isCellEmpty(cell2)) {
-    Cell.Booleen(compareCalculate(cell1.getNum.get,operator,0.0))
-  }
-  else Cell.ErrorCell
-
-def compareCalculate(value1: Double, operator: String, value2: Double): Boolean =
+def compareCompute(value1: Double, operator: String, value2: Double): Boolean =
   operator match {
     case "<" => value1 < value2
     case ">" => value1 > value2
@@ -27,6 +15,46 @@ def compareCalculate(value1: Double, operator: String, value2: Double): Boolean 
     case ">=" => value1 >= value2
     case "<=" => value1 <= value2
   }
+
+def compareOperator(cell1: Cell, operator:String, cell2: Cell):Cell =
+  if (isCellNum(cell1) && isCellNum(cell2)) {
+    Cell.Booleen(compareCompute(cell1.getNum.get,operator,cell2.getNum.get))
+  }
+  else if (isCellEmpty(cell1) && isCellNum(cell2)) {
+    Cell.Booleen(compareCompute(0.0,operator,cell2.getNum.get))
+  }
+  else if (isCellNum(cell1) && isCellEmpty(cell2)) {
+    Cell.Booleen(compareCompute(cell1.getNum.get,operator,0.0))
+  }
+  else Cell.ErrorCell
+
+
+
+def calculateCompute(value1: Double, operator: String, value2: Double): Double =
+  operator match {
+    case "+" => value1 + value2
+    case "-" => value1 - value2
+    case "*" => value1 * value2
+    case "/" => value1 / value2
+  }
+
+def calculateOperator(cell1: Cell, operator:String, cell2: Cell):Cell =
+  if (isCellNum(cell1) && isCellNum(cell2)) {
+    if(cell2.getNum.get == 0.0 && operator =="/")
+      Cell.ErrorCell
+    else
+      Cell.Number(calculateCompute(cell1.getNum.get, operator, cell2.getNum.get))
+  }
+  else if (isCellEmpty(cell1) && isCellNum(cell2)) {
+    Cell.Number(calculateCompute(0.0, operator, cell2.getNum.get))
+  }
+  else if (isCellNum(cell1) && isCellEmpty(cell2)) {
+    if(operator == "/")
+      Cell.ErrorCell
+    else
+      Cell.Number(calculateCompute(cell1.getNum.get, operator, 0.0))
+  }
+  else Cell.ErrorCell
 
 def sum(listOfCell: List[Cell]): Cell =
   var res : Double = 0
