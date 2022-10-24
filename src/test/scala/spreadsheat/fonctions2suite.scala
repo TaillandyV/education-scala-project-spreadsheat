@@ -21,45 +21,45 @@ class Functions2Suite extends munit.FunSuite {
   test("inf that works") {
     //inf
 
-    assertEquals(inf(Cell.Number(1), Cell.Number(2)), Cell.Booleen(true))
+    assertEquals(compareOperator(Cell.Number(1),"<", Cell.Number(2)), Cell.Booleen(true))
   }
 
   test("inf number + text") {
     //inf
-    assertEquals(inf(Cell.Number(2), Cell.Text("ed")), Cell.ErrorCell)
+    assertEquals(compareOperator(Cell.Number(2),"<",Cell.Text("ed")), Cell.ErrorCell)
   }
 
   test("supp that works") {
     //supp
 
-    assertEquals(supp(Cell.Number(3), Cell.Number(2)), Cell.Booleen(true))
+    assertEquals(compareOperator(Cell.Number(3),">", Cell.Number(2)), Cell.Booleen(true))
   }
 
   test("supp number + text") {
     //inf
-    assertEquals(supp(Cell.Number(2), Cell.Text("ed")), Cell.ErrorCell)
+    assertEquals(compareOperator(Cell.Number(2), ">",Cell.Text("ed")), Cell.ErrorCell)
   }
 
   test("infOrEqual that works") {
     //inf
 
-    assertEquals(infOrEqual(Cell.Number(2), Cell.Number(2)), Cell.Booleen(true))
+    assertEquals(compareOperator(Cell.Number(2), "<=",Cell.Number(2)), Cell.Booleen(true))
   }
 
   test("infOrEqual number + text") {
     //inf
-    assertEquals(infOrEqual(Cell.Number(2), Cell.Text("ed")), Cell.ErrorCell)
+    assertEquals(compareOperator(Cell.Number(2), "<=", Cell.Text("ed")), Cell.ErrorCell)
   }
 
   test("supOrEqual that works") {
     //inf
 
-    assertEquals(supOrEqual(Cell.Number(2), Cell.Number(2)), Cell.Booleen(true))
+    assertEquals(compareOperator(Cell.Number(2), ">=",Cell.Number(2)), Cell.Booleen(true))
   }
 
   test("supOrEqual number + text") {
     //inf
-    assertEquals(supOrEqual(Cell.Number(2), Cell.Text("ed")), Cell.ErrorCell)
+    assertEquals(compareOperator(Cell.Number(2), ">=", Cell.Text("ed")), Cell.ErrorCell)
   }
 }
 
