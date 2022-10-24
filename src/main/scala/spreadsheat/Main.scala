@@ -15,7 +15,7 @@ val numberCell = "^-?[0-9]+".r
 @main
 def main(): Unit = {
 
-  var spreadSheet = Spreadsheet.empty(3, 3)
+  var spreadSheet = Spreadsheet.empty(5, 5)
   spreadSheet.show
 
   while(!running.isCompleted){
@@ -31,7 +31,7 @@ def main(): Unit = {
 
 def getCommand(inputString: String,spreadSheet: Spreadsheet): Spreadsheet={
 
-  val assignPattern = "^[A-Z]+[0-9]+=(?:[A-Z]+[0-9]+[+*-/]|-?[0-9]+[+*-/])*(?:[A-Z]+[0-9]+|-?[0-9]+)".r
+  val assignPattern = "^[A-Z]+[0-9]+=(?!SUM)(?!CONCAT)(?!MIN)(?!MAX)(?!COUNT)(?!IF).*".r
 
   val sumPattern = "^[A-Z]+[0-9]+=SUM\\((?:[A-Z]+[0-9]+[:][A-Z]+[0-9]+|(?:-?[0-9]+[,]|[A-Z]+[0-9]+[,]|[A-Z]+[0-9]+[:][A-Z]+[0-9]+[,])+(?:-?[0-9]+|[A-Z]+[0-9]+|[A-Z]+[0-9]+[:][A-Z]+[0-9]+))\\)".r
 
@@ -122,7 +122,7 @@ def addValue(input:String,spreadSheet: Spreadsheet): Spreadsheet = {
   val addList = value.split("[+]")
 
   if (addList.size >= 2){
-    addList.foreach{ operation=>
+    addList.foreach{operation=>
       println(operation)
     }
     spreadSheet
@@ -132,7 +132,8 @@ def addValue(input:String,spreadSheet: Spreadsheet): Spreadsheet = {
       case cellCoordinate() =>
         val (corRow, corCol) = extractCoordinate(addList(0))
         spreadSheet.add(row, col, spreadSheet.getCell(corRow,corCol))
-      case _ => spreadSheet.add(row, col, Cell.stringToCell(addList(0)))
+      case _ =>
+        spreadSheet.add(row, col, Cell.stringToCell(addList(0)))
     }
   }
 }
@@ -141,8 +142,8 @@ def sumFunction(input:String, spreadSheet: Spreadsheet): Spreadsheet = {
   val (row,col,value) = extractCommand(input)
   val valueCleared = value.substring(4, value.length - 1)
   val sumList = valueCleared.split(",")
-  val test = sumList.map{coordinate =>
+  val cellList = sumList.map{coordinate =>
     evaluateCell(coordinate,spreadSheet)
   }
-  spreadSheet.add(row,col,sum(test.flatten.toList))
+  spreadSheet.add(row,col,sum(cellList.flatten.toList))
 }
