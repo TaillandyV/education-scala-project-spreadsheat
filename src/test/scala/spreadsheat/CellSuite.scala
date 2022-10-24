@@ -25,9 +25,6 @@ class CellSuite extends munit.FunSuite {
   }
   test("cell is a number ?") {
     val cell = "124"
-    println(Cell.stringToCell(cell))
-    println(Cell.Number(12))
-
     assertEquals(Cell.stringToCell(cell), Cell.Number(124))
   }
   test("string beginning with apostrophe + number") {
@@ -74,10 +71,6 @@ class CellSuite extends munit.FunSuite {
   test("cell is empty via isCellEmpty ") {
     val cell = Cell.ErrorCell
     val cell2 = Cell.Empty
-
-    println(cell2.getClass.toString)
-    println(cell.getClass.toString)
-
     assertEquals(Cell.isCellEmpty(cell), false)
     assertEquals(Cell.isCellEmpty(cell2), true)
   }

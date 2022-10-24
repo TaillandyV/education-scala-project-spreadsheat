@@ -7,6 +7,8 @@ val running : Future[Boolean] = promise.future
 val colTable = (0 until 26).map(index => (index + 'A').toChar.toString -> index).toMap
 
 val cellCoordinate = "^[A-Z]+[0-9]+".r
+val areaCoordinate = "^[A-Z]+[0-9]+:[A-Z]+[0-9]+".r
+
 
 @main
 def main(): Unit = {
@@ -83,10 +85,17 @@ def extractCoordinate(input:String)={
       val col = colTable.getOrElse("[0-9]+".r.split(input)(0), 0)
       val row = "[A-Z]+".r.split(input)(1).toInt
       (row,col)
+    case areaCoordinate() =>
+      val cell1:String = input.split(":")(0)
+      val cell2:String = input.split(":")(1)
+      val rowBorder1 = "[A-Z]+".r.split(cell1)(1).toInt
+      val rowBorder2 = "[A-Z]+".r.split(cell2)(1).toInt
+      val colBorder1 = colTable.getOrElse("[0-9]+".r.split(cell1)(0), 0)
+      val colBorder2 = colTable.getOrElse("[0-9]+".r.split(cell2)(0), 0)
+      (0,0)
     case _ => (0,0)
 
   }
-
 }
 
 def addValue(input:String,spreadSheet: Spreadsheet): Spreadsheet = {
