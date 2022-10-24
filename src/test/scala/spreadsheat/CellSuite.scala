@@ -88,14 +88,12 @@ class CellSuite extends munit.FunSuite {
     assertEquals(Cell.isCellError(cell), false)
     assertEquals(Cell.isCellError(cell2), true)
   }
-  test("full test") {
+  test("test getFunctions") {
     val cell = Cell.Number(124)
     val cell2 = Cell.Text("hello")
     val cell3 = Cell.Booleen(true)
-    val cell4 = Cell.Empty
-    val cell5 = Cell.ErrorCell
 
-    assertEquals(cell.getNum.get, 124)
+    assertEquals(cell.getNum.get, 124.0)
     assertEquals(cell2.getText, "hello")
     assertEquals(cell3.getBool, true)
   }
