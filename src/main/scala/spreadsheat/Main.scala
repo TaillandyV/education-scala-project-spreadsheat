@@ -1,4 +1,5 @@
 package spreadsheat
+import scala.collection.mutable.ListBuffer
 import scala.io.StdIn.readLine
 import scala.concurrent.*
 
@@ -8,6 +9,7 @@ val colTable = (0 until 26).map(index => (index + 'A').toChar.toString -> index)
 
 val cellCoordinate = "^[A-Z]+[0-9]+".r
 val areaCoordinate = "^[A-Z]+[0-9]+:[A-Z]+[0-9]+".r
+val numberCell = "^-?[0-9]+".r
 
 
 @main
@@ -78,24 +80,40 @@ def extractCommand(input:String)={
   val (row,col) = extractCoordinate(location)
   (row,col,value)
 }
-
-def extractCoordinate(input:String)={
+def evaluateCell(input:String,spreadsheet: Spreadsheet):List[Cell]={
+  val listCell = new ListBuffer[Cell]()
   input match{
-    case cellCoordinate() =>
-      val col = colTable.getOrElse("[0-9]+".r.split(input)(0), 0)
-      val row = "[A-Z]+".r.split(input)(1).toInt
-      (row,col)
+    case numberCell() =>
+      listCell += Cell.stringToCell(input)
+      listCell.toList
+    case cellCoordinate()=>
+      val (row,col) = extractCoordinate(input)
+      listCell += spreadsheet.getCell(row,col)
+      listCell.toList
     case areaCoordinate() =>
       val cell1:String = input.split(":")(0)
       val cell2:String = input.split(":")(1)
+
       val rowBorder1 = "[A-Z]+".r.split(cell1)(1).toInt
       val rowBorder2 = "[A-Z]+".r.split(cell2)(1).toInt
       val colBorder1 = colTable.getOrElse("[0-9]+".r.split(cell1)(0), 0)
       val colBorder2 = colTable.getOrElse("[0-9]+".r.split(cell2)(0), 0)
-      (0,0)
-    case _ => (0,0)
 
+      val listCoordinateCells = for col <- colBorder1 to colBorder2 yield for row <- rowBorder1 to rowBorder2 yield (row,col)
+      val listCell = listCoordinateCells.map{cellCoordinate =>
+        val rowCell = cellCoordinate.map{cell =>
+          spreadsheet.getCell(cell(0),cell(1))
+        }
+        rowCell.toList
+      }
+      listCell.toList.flatten
   }
+}
+
+def extractCoordinate(input:String)={
+  val col = colTable.getOrElse("[0-9]+".r.split(input)(0), 0)
+  val row = "[A-Z]+".r.split(input)(1).toInt
+  (row,col)
 }
 
 def addValue(input:String,spreadSheet: Spreadsheet): Spreadsheet = {
@@ -123,7 +141,8 @@ def sumFunction(input:String, spreadSheet: Spreadsheet): Spreadsheet = {
   val (row,col,value) = extractCommand(input)
   val valueCleared = value.substring(4, value.length - 1)
   val sumList = valueCleared.split(",")
-  val corList = sumList.map(extractCoordinate)
-  val cellList = corList.map(spreadSheet.getCell).toList
-  spreadSheet.add(row,col,sum(cellList))
+  val test = sumList.map{coordinate =>
+    evaluateCell(coordinate,spreadSheet)
+  }
+  spreadSheet.add(row,col,sum(test.flatten.toList))
 }
