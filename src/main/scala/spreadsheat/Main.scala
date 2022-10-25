@@ -117,7 +117,6 @@ def extractCoordinate(input:String)={
 }
 
 def addValue(input:String,spreadSheet: Spreadsheet): Spreadsheet = {
-
   val (row,col,value) = extractCommand(input)
   val addList = value.split("[+]")
 
