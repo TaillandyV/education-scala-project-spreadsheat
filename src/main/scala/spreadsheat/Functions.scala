@@ -1,8 +1,6 @@
 package spreadsheat
 
-import spreadsheat.Cell.isCellNum
-import spreadsheat.Cell.isCellEmpty
-import spreadsheat.Cell.isCellText
+import spreadsheat.Cell.{isCellEmpty, isCellNum, isCellText, stringToCell}
 import spreadsheat.Cell
 
 def compareCompute(value1: Double, operator: String, value2: Double): Boolean =
@@ -142,3 +140,21 @@ def max(listOfCell: List[Cell] = List()): Cell =
   }
   else Cell.Number(maxi)
 
+def ifCond(condition: String, True: String, False: String):Cell = {
+  val onlyLetters = "^[a-zA-Z]+$".r
+  val containsEqual = "[a-zA-Z0-9]*=[a-zA-Z0-9]*".r
+  val isANumber = "-?[0-9]*".r
+  condition match {
+    case containsEqual() =>
+      val command = condition.split("=")
+      val firstTerm = command(0)
+      val SecondTerm = command(1)
+      if(firstTerm == SecondTerm) stringToCell(True)
+      else stringToCell(False)
+    case onlyLetters() => Cell.ErrorCell
+    case "" => stringToCell(False)
+    case "0" => stringToCell(False)
+    case isANumber() => stringToCell(True)
+    case _ => stringToCell(False)
+  }
+}

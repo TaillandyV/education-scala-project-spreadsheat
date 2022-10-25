@@ -367,4 +367,71 @@ class FunctionsSuite extends munit.FunSuite {
     assertEquals(max(), Cell.Empty)
   }
 
+  //-------------------------------Function "ifCond"----------------------------------\\
+  test("if with number=number as condition"){
+    val condition = "1=1"
+
+    assertEquals(ifCond(condition, "oui","non"), Cell.Text("oui"))
+  }
+
+  test("if with number=Text as condition"){
+    val condition = "1=hello"
+
+    assertEquals(ifCond(condition, "oui","non"), Cell.Text("non"))
+  }
+
+  test("if with number=otherNumber as condition"){
+    val condition = "1=2"
+
+    assertEquals(ifCond(condition, "oui","non"), Cell.Text("non"))
+  }
+
+  test("if with Text=otherText as condition"){
+    val condition = "Hello=hello"
+
+    assertEquals(ifCond(condition, "oui","non"), Cell.Text("non"))
+  }
+
+  test("if with empty string as condition"){
+    val condition = ""
+
+    assertEquals(ifCond(condition, "oui","non"), Cell.Text("non"))
+  }
+
+  test("if with only text as condition"){
+    val condition = "hello"
+
+    assertEquals(ifCond(condition, "oui","non"), Cell.ErrorCell)
+  }
+
+  test("if with number different 0 as condition"){
+    val condition = "150"
+
+    assertEquals(ifCond(condition, "oui","non"), Cell.Text("oui"))
+  }
+
+  test("if with single digit different 0 as condition"){
+    val condition = "150"
+
+    assertEquals(ifCond(condition, "oui","non"), Cell.Text("oui"))
+  }
+
+  test("if with negative number as condition"){
+    val condition = "-150"
+
+    assertEquals(ifCond(condition, "oui","non"), Cell.Text("oui"))
+  }
+
+  test("if with 0 as condition"){
+    val condition = "0"
+
+    assertEquals(ifCond(condition, "oui","non"), Cell.Text("non"))
+  }
+  test("if with special character as condition"){
+    val condition = ">"
+
+    assertEquals(ifCond(condition, "oui","non"), Cell.Text("non"))
+  }
+
+
 }
