@@ -52,7 +52,7 @@ object Cell :
 
   def stringToText(string: String): Option[Cell] =
     val patternBeginDigit = "^'[0-9][a-zA-Z0-9]*".r
-    val patternBeginLetter = "^[a-zA-Z]*".r
+    val patternBeginLetter = "^[a-zA-Z][a-zA-Z0-9]*".r
     string match {
       case patternBeginDigit() => Some(Cell.Text(string.substring(1)))
       case patternBeginLetter() => Some(Cell.Text(string))
