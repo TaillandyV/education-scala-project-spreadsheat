@@ -10,6 +10,7 @@ val colTable = (0 until 26).map(index => (index + 'A').toChar.toString -> index)
 val cellCoordinate = "^[A-Z]+[0-9]+".r
 val areaCoordinate = "^[A-Z]+[0-9]+:[A-Z]+[0-9]+".r
 val numberCell = "^-?[0-9]+".r
+val operator = "^[A-Z]+[0-9]+=.+[+*/=].+".r
 
 
 @main
@@ -50,22 +51,18 @@ def getCommand(inputString: String,spreadSheet: Spreadsheet): Spreadsheet={
       promise.success(true)
       spreadSheet
     case assignPattern() =>
-      println("Doing assign")
       addValue(inputString,spreadSheet)
     case sumPattern() =>
-      println("Doing sum")
       sumFunction(inputString,spreadSheet)
     case concatPattern() =>
-      println("Doing concat")
       concatFunction(inputString,spreadSheet)
     case minPattern() =>
-      println("Doing min")
       minFunction(inputString,spreadSheet)
     case maxPattern() =>
-      println("Doing max")
       maxFunction(inputString, spreadSheet)
     case ifPattern() =>
-      println("Doing if")
+      spreadSheet
+    case countPattern() =>
       spreadSheet
     case _ =>
       println("Not a command")
@@ -74,7 +71,7 @@ def getCommand(inputString: String,spreadSheet: Spreadsheet): Spreadsheet={
 }
 
 def extractCommand(input:String)={
-  val command = input.split("=")
+  val command = input.split("=",2)
   val location = command(0)
   val value = command(1)
   val (row,col) = extractCoordinate(location)
@@ -83,9 +80,6 @@ def extractCommand(input:String)={
 def evaluateCell(input:String,spreadsheet: Spreadsheet):List[Cell]={
   val listCell = new ListBuffer[Cell]()
   input match{
-    case numberCell() =>
-      listCell += Cell.stringToCell(input)
-      listCell.toList
     case cellCoordinate()=>
       val (row,col) = extractCoordinate(input)
       listCell += spreadsheet.getCell(row,col)
@@ -107,6 +101,9 @@ def evaluateCell(input:String,spreadsheet: Spreadsheet):List[Cell]={
         rowCell.toList
       }
       listCell.toList.flatten
+    case _ =>
+      listCell += Cell.stringToCell(input)
+      listCell.toList
   }
 }
 
@@ -118,22 +115,55 @@ def extractCoordinate(input:String)={
 
 def addValue(input:String,spreadSheet: Spreadsheet): Spreadsheet = {
   val (row,col,value) = extractCommand(input)
-  val addList = value.split("[+]")
-
-  if (addList.size >= 2){
-    addList.foreach{operation=>
-      println(operation)
-    }
-    spreadSheet
-  }
-  else {
-    addList(0) match{
-      case cellCoordinate() =>
-        val (corRow, corCol) = extractCoordinate(addList(0))
-        spreadSheet.add(row, col, spreadSheet.getCell(corRow,corCol))
-      case _ =>
-        spreadSheet.add(row, col, Cell.stringToCell(addList(0)))
-    }
+  input match {
+    case operator() =>
+      if (input.contains("+")){
+        val operatorList = value.split("[+]")
+        spreadSheet.add(row,col,calculateOperator(evaluateCell(operatorList(0),spreadSheet).head,"+",evaluateCell(operatorList(1),spreadSheet).head))
+      }
+      else if(input.contains("-")){
+        val operatorList = value.split("[-]")
+        spreadSheet.add(row,col,calculateOperator(evaluateCell(operatorList(0),spreadSheet).head,"-",evaluateCell(operatorList(1),spreadSheet).head))
+      }
+      else if(input.contains("/")){
+        val operatorList = value.split("[/]")
+        spreadSheet.add(row,col,calculateOperator(evaluateCell(operatorList(0),spreadSheet).head,"/",evaluateCell(operatorList(1),spreadSheet).head))
+      }
+      else if(input.contains("*")){
+        val operatorList = value.split("[*]")
+        spreadSheet.add(row,col,calculateOperator(evaluateCell(operatorList(0),spreadSheet).head,"*",evaluateCell(operatorList(1),spreadSheet).head))
+      }
+      else if(input.contains("=")){
+        val operatorList = value.split("[=]")
+        spreadSheet.add(row,col,compareOperator(evaluateCell(operatorList(0),spreadSheet).head,"=",evaluateCell(operatorList(1),spreadSheet).head))
+      }
+      else if(input.contains("<")){
+        val operatorList = value.split("[<]")
+        spreadSheet.add(row,col,compareOperator(evaluateCell(operatorList(0),spreadSheet).head,"<",evaluateCell(operatorList(1),spreadSheet).head))
+      }
+      else if(input.contains(">")){
+        val operatorList = value.split("[>]")
+        spreadSheet.add(row,col,compareOperator(evaluateCell(operatorList(0),spreadSheet).head,">",evaluateCell(operatorList(1),spreadSheet).head))
+      }
+      else if(input.contains("<=")){
+        val operatorList = value.split("[<=]")
+        spreadSheet.add(row,col,compareOperator(evaluateCell(operatorList(0),spreadSheet).head,"<=",evaluateCell(operatorList(1),spreadSheet).head))
+      }
+      else if(input.contains(">=")){
+        val operatorList = value.split("[>=]")
+        spreadSheet.add(row,col,compareOperator(evaluateCell(operatorList(0),spreadSheet).head,">=",evaluateCell(operatorList(1),spreadSheet).head))
+      }
+      else{
+        spreadSheet.add(row,col,Cell.ErrorCell)
+      }
+    case _ =>
+      value match{
+        case cellCoordinate() =>
+          val (corRow, corCol) = extractCoordinate(value)
+          spreadSheet.add(row, col, spreadSheet.getCell(corRow,corCol))
+        case _ =>
+          spreadSheet.add(row, col, Cell.stringToCell(value))
+      }
   }
 }
 
@@ -171,6 +201,16 @@ def minFunction(input:String, spreadSheet: Spreadsheet): Spreadsheet = {
 def maxFunction(input:String, spreadSheet: Spreadsheet): Spreadsheet = {
   val (row,col,value) = extractCommand(input)
   val valueCleared = value.substring(4, value.length - 1)
+  val minList = valueCleared.split(",")
+  val cellList = minList.map{coordinate =>
+    evaluateCell(coordinate,spreadSheet)
+  }
+  spreadSheet.add(row,col,max(cellList.flatten.toList))
+}
+
+def ifFunction(input:String, spreadSheet: Spreadsheet): Spreadsheet = {
+  val (row,col,value) = extractCommand(input)
+  val valueCleared = value.substring(3, value.length - 1)
   val minList = valueCleared.split(",")
   val cellList = minList.map{coordinate =>
     evaluateCell(coordinate,spreadSheet)

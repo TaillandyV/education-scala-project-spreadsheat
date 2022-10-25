@@ -22,8 +22,10 @@ def compareOperator(cell1: Cell, operator:String, cell2: Cell):Cell =
   else if (isCellNum(cell1) && isCellEmpty(cell2)) {
     Cell.Booleen(compareCompute(cell1.getNum.get,operator,0.0))
   }
+  else if (isCellEmpty(cell1) && isCellEmpty(cell2)) {
+    Cell.Booleen(compareCompute(0.0,operator,0.0))
+  }
   else Cell.ErrorCell
-
 
 
 def calculateCompute(value1: Double, operator: String, value2: Double): Double =
@@ -50,6 +52,13 @@ def calculateOperator(cell1: Cell, operator:String, cell2: Cell):Cell =
     else
       Cell.Number(calculateCompute(cell1.getNum.get, operator, 0.0))
   }
+  else if (isCellEmpty(cell1) && isCellEmpty(cell2)) {
+    if(operator == "/")
+      Cell.ErrorCell
+    else
+      Cell.Number(calculateCompute(0.0, operator, 0.0))
+  }
+
   else Cell.ErrorCell
 
 def sum(listOfCell: List[Cell]): Cell =
