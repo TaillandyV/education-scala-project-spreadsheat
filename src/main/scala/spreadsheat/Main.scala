@@ -10,7 +10,7 @@ val colTable = (0 until 26).map(index => (index + 'A').toChar.toString -> index)
 val cellCoordinate = "^[A-Z]+[0-9]+".r
 val areaCoordinate = "^[A-Z]+[0-9]+:[A-Z]+[0-9]+".r
 val numberCell = "^-?[0-9]+".r
-val operator = "^[A-Z]+[0-9]+=.+[+*/=].+".r
+val operator = "^[A-Z]+[0-9]+=.+[<>+*/=-].+".r
 
 
 @main
@@ -117,41 +117,41 @@ def addValue(input:String,spreadSheet: Spreadsheet): Spreadsheet = {
   val (row,col,value) = extractCommand(input)
   input match {
     case operator() =>
-      if (input.contains("+")){
+      if (value.contains("+")){
         val operatorList = value.split("[+]")
         spreadSheet.add(row,col,calculateOperator(evaluateCell(operatorList(0),spreadSheet).head,"+",evaluateCell(operatorList(1),spreadSheet).head))
       }
-      else if(input.contains("-")){
+      else if(value.contains("-")){
         val operatorList = value.split("[-]")
         spreadSheet.add(row,col,calculateOperator(evaluateCell(operatorList(0),spreadSheet).head,"-",evaluateCell(operatorList(1),spreadSheet).head))
       }
-      else if(input.contains("/")){
+      else if(value.contains("/")){
         val operatorList = value.split("[/]")
         spreadSheet.add(row,col,calculateOperator(evaluateCell(operatorList(0),spreadSheet).head,"/",evaluateCell(operatorList(1),spreadSheet).head))
       }
-      else if(input.contains("*")){
+      else if(value.contains("*")){
         val operatorList = value.split("[*]")
         spreadSheet.add(row,col,calculateOperator(evaluateCell(operatorList(0),spreadSheet).head,"*",evaluateCell(operatorList(1),spreadSheet).head))
       }
-      else if(input.contains("=")){
+      else if(value.contains("<=")){
+        val operatorList = value.split("<=")
+        spreadSheet.add(row,col,compareOperator(evaluateCell(operatorList(0),spreadSheet).head,"<=",evaluateCell(operatorList(1),spreadSheet).head))
+      }
+      else if(value.contains(">=")){
+        val operatorList = value.split(">=")
+        spreadSheet.add(row,col,compareOperator(evaluateCell(operatorList(0),spreadSheet).head,">=",evaluateCell(operatorList(1),spreadSheet).head))
+      }
+      else if(value.contains("=")){
         val operatorList = value.split("[=]")
         spreadSheet.add(row,col,compareOperator(evaluateCell(operatorList(0),spreadSheet).head,"=",evaluateCell(operatorList(1),spreadSheet).head))
       }
-      else if(input.contains("<")){
+      else if(value.contains("<")){
         val operatorList = value.split("[<]")
         spreadSheet.add(row,col,compareOperator(evaluateCell(operatorList(0),spreadSheet).head,"<",evaluateCell(operatorList(1),spreadSheet).head))
       }
-      else if(input.contains(">")){
+      else if(value.contains(">")){
         val operatorList = value.split("[>]")
         spreadSheet.add(row,col,compareOperator(evaluateCell(operatorList(0),spreadSheet).head,">",evaluateCell(operatorList(1),spreadSheet).head))
-      }
-      else if(input.contains("<=")){
-        val operatorList = value.split("[<=]")
-        spreadSheet.add(row,col,compareOperator(evaluateCell(operatorList(0),spreadSheet).head,"<=",evaluateCell(operatorList(1),spreadSheet).head))
-      }
-      else if(input.contains(">=")){
-        val operatorList = value.split("[>=]")
-        spreadSheet.add(row,col,compareOperator(evaluateCell(operatorList(0),spreadSheet).head,">=",evaluateCell(operatorList(1),spreadSheet).head))
       }
       else{
         spreadSheet.add(row,col,Cell.ErrorCell)
