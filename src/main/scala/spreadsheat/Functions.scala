@@ -71,13 +71,22 @@ def sum(listOfCell: List[Cell]): Cell =
 
 def concat(cell1 : Cell, cell2:Cell) : Cell =
   if(isCellText(cell1) && isCellText(cell2)){
-    Cell.Text(cell1.getText + " " + cell2.getText)
+    Cell.Text(cell1.getText + cell2.getText)
   }
   else if (isCellEmpty(cell1) && isCellText(cell2)){
     Cell.Text(cell2.getText)
   }
   else if (isCellEmpty(cell2) && isCellText(cell1)){
     Cell.Text(cell1.getText)
+  }
+  else if (isCellEmpty(cell1) && isCellNum(cell2)){
+    Cell.Number(cell2.getNum.get)
+  }
+  else if (isCellEmpty(cell2) && isCellNum(cell1)){
+    Cell.Number(cell1.getNum.get)
+  }
+  else if (isCellNum(cell1) && isCellNum(cell2)){
+    Cell.Number((cell1.getNum.get.toInt.toString + cell2.getNum.get.toInt.toString).toDouble)
   }
   else Cell.ErrorCell
 
