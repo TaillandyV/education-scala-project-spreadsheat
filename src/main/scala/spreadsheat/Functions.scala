@@ -90,8 +90,10 @@ def concat(cell1 : Cell, cell2:Cell) : Cell =
   }
   else Cell.ErrorCell
 
-def min(listOfCell: List[Cell]): Cell =
+def min(listOfCell: List[Cell] = List()): Cell =
   var mini: Double = Double.MaxValue
+  var nbEmpty : Int = 0
+  val lengthList = listOfCell.length
   listOfCell.zipWithIndex.foreach{
     case(value, idx)=>
       if(isCellNum(value)){
@@ -100,15 +102,24 @@ def min(listOfCell: List[Cell]): Cell =
         }
       }
       else if(isCellEmpty(value)){
+        nbEmpty += 1
       }
       else if(!isCellNum(value)) {
         return Cell.ErrorCell
       }
   }
-  Cell.Number(mini)
+  if (lengthList == 0) {
+    Cell.Empty
+  }
+  else if (lengthList == nbEmpty) {
+    Cell.Number(0)
+  }
+  else Cell.Number(mini)
 
-def max(listOfCell: List[Cell]): Cell =
+def max(listOfCell: List[Cell] = List()): Cell =
   var maxi: Double = Double.MinValue
+  var nbEmpty : Int = 0
+  val lengthList = listOfCell.length
   listOfCell.zipWithIndex.foreach{
     case(value, idx)=>
       if(isCellNum(value)){
@@ -117,10 +128,17 @@ def max(listOfCell: List[Cell]): Cell =
         }
       }
       else if(isCellEmpty(value)){
+        nbEmpty += 1
       }
       else if(!isCellNum(value)) {
         return Cell.ErrorCell
       }
   }
-  Cell.Number(maxi)
+  if (lengthList == 0) {
+    Cell.Empty
+  }
+  else if (lengthList == nbEmpty) {
+    Cell.Number(0)
+  }
+  else Cell.Number(maxi)
 

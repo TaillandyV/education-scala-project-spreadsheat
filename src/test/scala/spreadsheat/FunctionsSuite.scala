@@ -285,8 +285,8 @@ class FunctionsSuite extends munit.FunSuite {
     val cell2 = Cell.Number(2)
     val cell3 = Cell.Number(1)
     val cell4 = Cell.Number(4)
-
     val listOfCells = List(cell1, cell2, cell3, cell4)
+
     assertEquals(min(listOfCells), Cell.Number(1))
   }
   test("minimum with text") {
@@ -294,8 +294,8 @@ class FunctionsSuite extends munit.FunSuite {
     val cell2 = Cell.Text("2")
     val cell3 = Cell.Number(1)
     val cell4 = Cell.Number(4)
-
     val listOfCells = List(cell1, cell2, cell3, cell4)
+
     assertEquals(min(listOfCells), Cell.ErrorCell)
   }
   test("minimum with empty") {
@@ -303,21 +303,68 @@ class FunctionsSuite extends munit.FunSuite {
     val cell2 = Cell.Empty
     val cell3 = Cell.Number(2)
     val cell4 = Cell.Number(4)
-
     val listOfCells = List(cell1, cell2, cell3, cell4)
+
     assertEquals(min(listOfCells), Cell.Number(2))
   }
 
+  test("minimum with all empty") {
+    val cell1 = Cell.Empty
+    val cell2 = Cell.Empty
+    val cell3 = Cell.Empty
+    val cell4 = Cell.Empty
+    val listOfCells = List(cell1, cell2, cell3, cell4)
 
-  test("maximum with text") {
-    //maximum
-    assertEquals(max(List(Cell.Number(1), Cell.Empty, Cell.Text("3"), Cell.Number(4))), Cell.ErrorCell)
-    println(max(List(Cell.Number(1), Cell.Number(2), Cell.Text("3"), Cell.Number(4))))
+    assertEquals(min(listOfCells), Cell.Number(0))
   }
-  test("maximum that works") {
-    //maximum
-    assertEquals(max(List(Cell.Number(1), Cell.Number(2), Cell.Number(3), Cell.Number(4))), Cell.Number(4))
-    println(max(List(Cell.Number(1), Cell.Number(2), Cell.Number(3), Cell.Number(4))))
+  test("maximum with empty list") {
+    val listOfCells = List()
+
+    assertEquals(min(), Cell.Empty)
+  }
+
+  //-------------------------------Function "maximum"----------------------------------\\
+  test("maximum with only numbers") {
+    val cell1 = Cell.Number(3)
+    val cell2 = Cell.Number(2)
+    val cell3 = Cell.Number(4)
+    val cell4 = Cell.Number(1)
+    val listOfCells = List(cell1, cell2, cell3, cell4)
+
+    assertEquals(max(listOfCells), Cell.Number(4))
+  }
+  test("maximum with text") {
+    val cell1 = Cell.Number(3)
+    val cell2 = Cell.Text("2")
+    val cell3 = Cell.Number(1)
+    val cell4 = Cell.Number(4)
+    val listOfCells = List(cell1, cell2, cell3, cell4)
+
+    assertEquals(max(listOfCells), Cell.ErrorCell)
+  }
+  test("maximum with empty") {
+    val cell1 = Cell.Number(3)
+    val cell2 = Cell.Empty
+    val cell3 = Cell.Number(2)
+    val cell4 = Cell.Number(4)
+    val listOfCells = List(cell1, cell2, cell3, cell4)
+
+    assertEquals(max(listOfCells), Cell.Number(4))
+  }
+
+  test("maximum with all empty") {
+    val cell1 = Cell.Empty
+    val cell2 = Cell.Empty
+    val cell3 = Cell.Empty
+    val cell4 = Cell.Empty
+    val listOfCells = List(cell1, cell2, cell3, cell4)
+
+    assertEquals(max(listOfCells), Cell.Number(0))
+  }
+  test("maximum with empty list") {
+    val listOfCells = List()
+
+    assertEquals(max(), Cell.Empty)
   }
 
 }
