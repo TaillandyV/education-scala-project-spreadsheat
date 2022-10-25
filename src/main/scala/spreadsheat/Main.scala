@@ -57,13 +57,13 @@ def getCommand(inputString: String,spreadSheet: Spreadsheet): Spreadsheet={
       sumFunction(inputString,spreadSheet)
     case concatPattern() =>
       println("Doing concat")
-      spreadSheet
+      concatFunction(inputString,spreadSheet)
     case minPattern() =>
       println("Doing min")
-      spreadSheet
+      minFunction(inputString,spreadSheet)
     case maxPattern() =>
       println("Doing max")
-      spreadSheet
+      maxFunction(inputString, spreadSheet)
     case ifPattern() =>
       println("Doing if")
       spreadSheet
@@ -146,4 +146,35 @@ def sumFunction(input:String, spreadSheet: Spreadsheet): Spreadsheet = {
     evaluateCell(coordinate,spreadSheet)
   }
   spreadSheet.add(row,col,sum(cellList.flatten.toList))
+}
+
+def concatFunction(input:String, spreadSheet: Spreadsheet): Spreadsheet = {
+  val (row,col,value) = extractCommand(input)
+  val valueCleared = value.substring(7, value.length - 1)
+  val concatList = valueCleared.split(",")
+  val cellList = concatList.map{coordinate =>
+    evaluateCell(coordinate,spreadSheet)
+  }
+  val cells = cellList.flatten
+  spreadSheet.add(row,col,concat(cells(0),cells(1)))
+}
+
+def minFunction(input:String, spreadSheet: Spreadsheet): Spreadsheet = {
+  val (row,col,value) = extractCommand(input)
+  val valueCleared = value.substring(4, value.length - 1)
+  val minList = valueCleared.split(",")
+  val cellList = minList.map{coordinate =>
+    evaluateCell(coordinate,spreadSheet)
+  }
+  spreadSheet.add(row,col,minimum(cellList.flatten.toList))
+}
+
+def maxFunction(input:String, spreadSheet: Spreadsheet): Spreadsheet = {
+  val (row,col,value) = extractCommand(input)
+  val valueCleared = value.substring(4, value.length - 1)
+  val minList = valueCleared.split(",")
+  val cellList = minList.map{coordinate =>
+    evaluateCell(coordinate,spreadSheet)
+  }
+  spreadSheet.add(row,col,maximum(cellList.flatten.toList))
 }
