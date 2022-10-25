@@ -90,7 +90,7 @@ def concat(cell1 : Cell, cell2:Cell) : Cell =
   }
   else Cell.ErrorCell
 
-def minimum(listOfCell: List[Cell]): Cell =
+def min(listOfCell: List[Cell]): Cell =
   var mini: Double = Double.MaxValue
   listOfCell.zipWithIndex.foreach{
     case(value, idx)=>
@@ -107,7 +107,7 @@ def minimum(listOfCell: List[Cell]): Cell =
   }
   Cell.Number(mini)
 
-def maximum(listOfCell: List[Cell]): Cell =
+def max(listOfCell: List[Cell]): Cell =
   var maxi: Double = Double.MinValue
   listOfCell.zipWithIndex.foreach{
     case(value, idx)=>
