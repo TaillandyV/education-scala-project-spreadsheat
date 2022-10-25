@@ -432,6 +432,43 @@ class FunctionsSuite extends munit.FunSuite {
 
     assertEquals(ifCond(condition, "oui","non"), Cell.Text("non"))
   }
+  //-------------------------------Function "countCell"----------------------------------\\
+  test("count with only numbers"){
+    val cell1 = Cell.Number(1)
+    val cell2 = Cell.Number(2)
+    val cell3 = Cell.Number(3)
+    val cell4 = Cell.Number(4)
+    val listOfCells = List(cell1, cell2, cell3, cell4)
 
+    assertEquals(countCell(listOfCells), Cell.Number(4))
+  }
 
+  test("count with only text"){
+    val cell1 = Cell.Text("1")
+    val cell2 = Cell.Text("2")
+    val cell3 = Cell.Text("3")
+    val cell4 = Cell.Text("4")
+    val listOfCells = List(cell1, cell2, cell3, cell4)
+
+    assertEquals(countCell(listOfCells), Cell.Number(4))
+  }
+
+  test("count with numbers, text and empty cells"){
+    val cell1 = Cell.Number(1)
+    val cell2 = Cell.Text("2")
+    val cell3 = Cell.Empty
+    val cell4 = Cell.Empty
+    val listOfCells = List(cell1, cell2, cell3, cell4)
+
+    assertEquals(countCell(listOfCells), Cell.Number(2))
+  }
+  test("count with numbers, text empty cells and ErrorCells"){
+    val cell1 = Cell.Number(1)
+    val cell2 = Cell.Text("2")
+    val cell3 = Cell.ErrorCell
+    val cell4 = Cell.Empty
+    val listOfCells = List(cell1, cell2, cell3, cell4)
+
+    assertEquals(countCell(listOfCells), Cell.Number(2))
+  }
 }

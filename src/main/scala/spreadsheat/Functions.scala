@@ -1,6 +1,6 @@
 package spreadsheat
 
-import spreadsheat.Cell.{isCellEmpty, isCellNum, isCellText, stringToCell}
+import spreadsheat.Cell.{isCellEmpty, isCellError, isCellNum, isCellText, stringToCell}
 import spreadsheat.Cell
 
 def compareCompute(value1: Double, operator: String, value2: Double): Boolean =
@@ -158,3 +158,12 @@ def ifCond(condition: String, True: String, False: String):Cell = {
     case _ => stringToCell(False)
   }
 }
+
+def countCell(listOfCell: List[Cell]): Cell =
+  var res : Double = 0
+  listOfCell.zipWithIndex.foreach{
+    case(value, idx)=>
+      if(isCellError(value)) {}
+      else if(!isCellEmpty(value)) res+=1
+  }
+  Cell.Number(res)
