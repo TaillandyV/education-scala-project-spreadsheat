@@ -166,7 +166,7 @@ def minFunction(input:String, spreadSheet: Spreadsheet): Spreadsheet = {
   val cellList = minList.map{coordinate =>
     evaluateCell(coordinate,spreadSheet)
   }
-  spreadSheet.add(row,col,minimum(cellList.flatten.toList))
+  spreadSheet.add(row,col,min(cellList.flatten.toList))
 }
 
 def maxFunction(input:String, spreadSheet: Spreadsheet): Spreadsheet = {
@@ -176,5 +176,5 @@ def maxFunction(input:String, spreadSheet: Spreadsheet): Spreadsheet = {
   val cellList = minList.map{coordinate =>
     evaluateCell(coordinate,spreadSheet)
   }
-  spreadSheet.add(row,col,maximum(cellList.flatten.toList))
+  spreadSheet.add(row,col,max(cellList.flatten.toList))
 }
