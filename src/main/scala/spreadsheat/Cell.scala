@@ -18,15 +18,6 @@ enum Cell:
       case Empty => " " * 5
       case ErrorCell => "#ERROR"
 
-  def getValue : Either[String,Either[Double, Boolean]] =
-    val DoubleValue : Either[String,Either[Double, Boolean]] = Left(this.show)
-    this match
-      case Number(double) => Right(Left(this.show.toDouble))
-      case Text(string) => Left(this.show)
-      case Booleen(bool) => Right(Right(this.show.toBoolean))
-      case Empty => Left(null)
-      case ErrorCell => Left("precedent")
-
   def getNum : Option[Double] =
     this.show.toDoubleOption
 
