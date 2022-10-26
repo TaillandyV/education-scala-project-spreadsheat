@@ -1,6 +1,7 @@
 package spreadsheat
 
-import spreadsheat.Cell.stringToBooleen
+enum CellType:
+  case Number, Text, Booleen, Empty, ErrorCell
 
 
 enum Cell:
@@ -17,6 +18,14 @@ enum Cell:
       case Booleen(bool) => bool.toString
       case Empty => " " * 5
       case ErrorCell => "#ERROR"
+
+  def getType: CellType =
+    this match
+      case Cell.Number(_)  => CellType.Number
+      case Cell.Text(_)    => CellType.Text
+      case Cell.Booleen(_) => CellType.Booleen
+      case Cell.Empty      => CellType.Empty
+      case Cell.ErrorCell  => CellType.ErrorCell
 
   def getNum : Option[Double] =
     this.show.toDoubleOption
@@ -55,40 +64,26 @@ object Cell :
   }
 
   def isCellNum(cell: Cell): Boolean = {
-    cell.getClass.toString match {
-      case "class spreadsheat.Cell$Number" => true
-      case _ => false
-    }
+    if(cell.getType == CellType.Number) true
+    else false
   }
-
+  
   def isCellText(cell: Cell): Boolean = {
-    cell.getClass.toString match {
-      case "class spreadsheat.Cell$Text" => true
-      case _ => false
-    }
+    if(cell.getType == CellType.Text) true
+    else false
   }
 
   def isCellBool(cell: Cell): Boolean = {
-    cell.getClass.toString match {
-      case "class spreadsheat.Cell$Booleen" => true
-      case _ => false
-    }
+    if(cell.getType == CellType.Booleen) true
+    else false
   }
 
   def isCellEmpty(cell: Cell): Boolean = {
-    if(cell.show == "     ") true
+    if(cell.getType == CellType.Empty) true
     else false
-    /*cell.getClass.toString match {
-      case "class spreadsheat.Cell$$anon$1" => true
-      case _ => false
-    }*/
   }
 
   def isCellError(cell: Cell): Boolean = {
-    if(cell.show == "#ERROR") true
+    if(cell.getType == CellType.ErrorCell) true
     else false
-    /*cell.getClass.toString match {
-      case "class spreadsheat.Cell$$anon$1" => true
-      case _ => false
-    }*/
   }
