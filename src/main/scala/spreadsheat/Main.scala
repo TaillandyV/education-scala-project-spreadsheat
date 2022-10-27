@@ -50,6 +50,8 @@ def getCommand(inputString: String,spreadSheet: Spreadsheet): Spreadsheet={
     case "EXIT" =>
       promise.success(true)
       spreadSheet
+    case "CLEAR" =>
+      Spreadsheet.empty(5, 5)
     case assignPattern() =>
       addValue(inputString,spreadSheet)
     case sumPattern() =>
